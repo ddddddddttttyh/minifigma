@@ -18,7 +18,6 @@ export function useHotkeys(setTool: (tool: Tool) => void, shapes: ShapesApi) {
     function onKeyDown(e: KeyboardEvent) {
       const target = e.target as HTMLElement | null
       if (target && (target.isContentEditable || target.tagName === 'INPUT' || target.tagName === 'TEXTAREA')) {
-        if (!['Escape'].includes(e.key)) return
         return
       }
 
