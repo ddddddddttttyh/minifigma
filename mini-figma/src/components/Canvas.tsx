@@ -199,7 +199,7 @@ export default function Canvas({ tool, shapes }: CanvasProps) {
     }
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
-  })
+  }, [viewport.zoom, shapes.shapes, setZoom, setView])
 
   function zoomToFit() {
     const rect = canvasRef.current?.getBoundingClientRect()
