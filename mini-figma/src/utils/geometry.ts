@@ -16,16 +16,6 @@ export function translatePoint(
   }
 }
 
-export function deltaBetween(
-  from: Point,
-  to: Point,
-): Point {
-  return {
-    x: to.x - from.x,
-    y: to.y - from.y,
-  }
-}
-
 export function normalizeRect(
   origin: { x: number; y: number },
   current: Point,
