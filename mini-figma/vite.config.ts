@@ -4,7 +4,7 @@ import { defineConfig } from 'vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/minifigma/',
+  base: '/mini-figma/',
   server: { host: true },
   plugins: [react(), tailwindcss()],
 })
