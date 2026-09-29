@@ -117,16 +117,6 @@ export function useShapes() {
     setSelectedIds((ids) => ids.filter((id) => exists.has(id)))
   }, [])
 
-  const addShape = useCallback(
-    (shape: Omit<Shape, 'id'>) => {
-      const id = createId()
-      applyChange((prev) => [...prev, { fill: DEFAULT_FILL, ...shape, id }])
-      setSelectedIds([id])
-      return id
-    },
-    [applyChange],
-  )
-
   const updateShape = useCallback(
     (id: string, patch: Partial<Omit<Shape, 'id'>>) => {
       applyChange((prev) => prev.map((s) => (s.id === id ? { ...s, ...patch } : s)))
@@ -189,10 +179,6 @@ export function useShapes() {
     applyChange((prev) => [...prev, ...copies])
     setSelectedIds(copies.map((c) => c.id))
   }, [applyChange])
-
-  const duplicateSelected = useCallback(() => {
-    copySelected()
-  }, [copySelected])
 
   const bringToFront = useCallback(() => {
     const ids = selectedIds
@@ -371,7 +357,6 @@ export function useShapes() {
     draft,
     undo,
     redo,
-    addShape,
     updateShape,
     updateSelected,
     renameShape,
@@ -381,7 +366,6 @@ export function useShapes() {
     deleteSelected,
     copySelected,
     pasteClipboard,
-    duplicateSelected,
     bringToFront,
     sendToBack,
     alignSelection,
