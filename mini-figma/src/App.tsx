@@ -19,7 +19,12 @@ export default function App() {
         <Canvas tool={tool} shapes={shapes} />
       </div>
       <div className="flex flex-col">
-        <LayersPanel shapes={shapes.shapes} selectedIds={shapes.selectedIds} onSelect={shapes.select} />
+        <LayersPanel
+          shapes={shapes.shapes}
+          selectedIds={shapes.selectedIds}
+          onSelect={shapes.select}
+          onRename={shapes.renameShape}
+        />
         <PropertiesPanel shapes={shapes} />
       </div>
     </div>

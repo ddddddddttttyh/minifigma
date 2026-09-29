@@ -72,6 +72,10 @@ export function useViewport() {
     setViewport((v) => ({ ...v, zoom: clampZoom(zoom) }))
   }, [])
 
+  const setView = useCallback((v: Viewport) => {
+    setViewport((prev) => ({ ...prev, zoom: clampZoom(v.zoom), scrollX: v.scrollX, scrollY: v.scrollY }))
+  }, [])
+
   return {
     viewport,
     isPanning,
@@ -82,5 +86,6 @@ export function useViewport() {
     endPan,
     handleWheel,
     setZoom,
+    setView,
   }
 }

@@ -10,6 +10,7 @@ export const TOOLS: ToolInfo[] = [
   { id: 'select', label: 'Выбор', hotkey: 'V' },
   { id: 'rectangle', label: 'Прямоугольник', hotkey: 'R' },
   { id: 'ellipse', label: 'Эллипс', hotkey: 'O' },
+  { id: 'text', label: 'Текст', hotkey: 'T' },
 ]
 
 export const TOOL_BY_KEY: Record<string, Tool> = Object.fromEntries(
