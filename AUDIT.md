@@ -37,3 +37,21 @@ P1:
 6. Зависимости `useEffect` в Canvas.
 7. Мин-размеры в PropertiesPanel.
 8. `lang="ru"` в index.html.
+
+## Что исправлено (29.09.2026)
+
+Все правки выполнены в ветке `refactor/audit-fixes` (main не изменён, без push):
+
+- Зафиксирован снимок незакоммиченной разработки редактора и workflow (проблема 1).
+- `vite.config.ts`: base `/mini-figma/` → `/minifigma/` (проблема 2).
+- `useShapes.ts`: полная валидация загружаемых фигур (id, тип, числовые x/y/width/height) (проблема 3).
+- `useHotkeys.ts`: удалена недостижимая ветка Escape (проблема 4).
+- Удалён мёртвый код: `addShape`, `duplicateSelected`, `deltaBetween` (проблемы 5-6).
+- `Canvas.tsx`: добавлены зависимости `useEffect` хоткеев зума (проблема 7).
+- `PropertiesPanel.tsx`: ширина/высота ограничены min=1 (проблема 8).
+- `mini-figma/index.html`: `lang="ru"` (проблема 9).
+
+Осталось (принято осознанно): wheel-хак в Canvas.tsx (проблема 10, технический долг риском для зума).
+
+Проверка после каждой правки: `npm run build` (tsc -b + vite), `npm run lint` (oxlint, 0 ошибок); node v24.
+
