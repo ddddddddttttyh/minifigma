@@ -10,16 +10,34 @@ function createId(): string {
   return Math.random().toString(36).slice(2, 10)
 }
 
+const SHAPE_TYPES: ShapeType[] = ['rectangle', 'ellipse', 'text']
+
+function isFiniteNumber(value: unknown): value is number {
+  return typeof value === 'number' && Number.isFinite(value)
+}
+
+function isValidShape(value: unknown): value is Shape {
+  if (typeof value !== 'object' || value === null) return false
+  const s = value as Partial<Shape>
+  return (
+    typeof s.id === 'string' &&
+    s.id !== '' &&
+    typeof s.type === 'string' &&
+    SHAPE_TYPES.includes(s.type as ShapeType) &&
+    isFiniteNumber(s.x) &&
+    isFiniteNumber(s.y) &&
+    isFiniteNumber(s.width) &&
+    isFiniteNumber(s.height)
+  )
+}
+
 function loadShapes(): Shape[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (!raw) return []
     const parsed: unknown = JSON.parse(raw)
     if (!Array.isArray(parsed)) return []
-    return parsed.filter(
-      (s): s is Shape =>
-        typeof s === 'object' && s !== null && typeof (s as Shape).id === 'string',
-    )
+    return parsed.filter(isValidShape)
   } catch {
     return []
   }
