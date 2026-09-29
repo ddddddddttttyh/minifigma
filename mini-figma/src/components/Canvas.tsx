@@ -203,6 +203,14 @@ export default function Canvas({ tool, shapes }: CanvasProps) {
 
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
+      if (e.code === 'Space') {
+        const target = e.target as HTMLElement | null
+        if (target && (target.isContentEditable || target.tagName === 'INPUT' || target.tagName === 'TEXTAREA')) {
+          return
+        }
+        isSpaceDown.current = true
+        return
+      }
       if (e.ctrlKey || e.metaKey) {
         const key = e.key.toLowerCase()
         if (key === '=' || key === '+') {
@@ -217,8 +225,17 @@ export default function Canvas({ tool, shapes }: CanvasProps) {
         }
       }
     }
+    function onKeyUp(e: KeyboardEvent) {
+      if (e.code === 'Space') {
+        isSpaceDown.current = false
+      }
+    }
     window.addEventListener('keydown', onKeyDown)
-    return () => window.removeEventListener('keydown', onKeyDown)
+    window.addEventListener('keyup', onKeyUp)
+    return () => {
+      window.removeEventListener('keydown', onKeyDown)
+      window.removeEventListener('keyup', onKeyUp)
+    }
   }, [viewport.zoom, shapes.shapes, setZoom, setView, zoomToFit])
 
   return (
