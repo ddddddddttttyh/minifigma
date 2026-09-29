@@ -45,10 +45,10 @@ export default function PropertiesPanel({ shapes }: PropertiesPanelProps) {
             <NumInput value={selected.y}  onChange={(v) => shapes.updateShape(selected.id, { y: v })} />
           </Row>
           <Row label="Ш">
-            <NumInput value={selected.width}  onChange={(v) => shapes.updateShape(selected.id, { width: v })} />
+            <NumInput value={selected.width}  onChange={(v) => shapes.updateShape(selected.id, { width: Math.max(1, v) })} />
           </Row>
           <Row label="В">
-            <NumInput value={selected.height}  onChange={(v) => shapes.updateShape(selected.id, { height: v })} />
+            <NumInput value={selected.height}  onChange={(v) => shapes.updateShape(selected.id, { height: Math.max(1, v) })} />
           </Row>
 
           <hr className="border-zinc-100" />
