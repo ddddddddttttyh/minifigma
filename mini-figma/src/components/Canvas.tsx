@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, type PointerEvent as ReactPointerEvent, type WheelEvent as ReactWheelEvent } from 'react'
+import { useCallback, useEffect, useState, useRef, type PointerEvent as ReactPointerEvent, type WheelEvent as ReactWheelEvent } from 'react'
 import { useViewport } from '../hooks/useViewport'
 import type { ShapesApi } from '../hooks/useShapes'
 import type { Corner, Rect as RectModel, Tool } from '../types/shape'
@@ -181,6 +181,26 @@ export default function Canvas({ tool, shapes }: CanvasProps) {
     isDragging.current = false
   }
 
+  const zoomToFit = useCallback(() => {
+    const rect = canvasRef.current?.getBoundingClientRect()
+    if (!rect || shapes.shapes.length === 0) {
+      setZoom(1)
+      return
+    }
+    const minX = Math.min(...shapes.shapes.map((s) => s.x))
+    const maxX = Math.max(...shapes.shapes.map((s) => s.x + s.width))
+    const minY = Math.min(...shapes.shapes.map((s) => s.y))
+    const maxY = Math.max(...shapes.shapes.map((s) => s.y + s.height))
+    const width = Math.max(maxX - minX, 100)
+    const height = Math.max(maxY - minY, 100)
+    const zoom = clampZoom(Math.min((rect.width - 160) / width, (rect.height - 160) / height))
+    setView({
+      zoom,
+      scrollX: rect.width / 2 - zoom * (minX + width / 2),
+      scrollY: rect.height / 2 - zoom * (minY + height / 2),
+    })
+  }, [shapes.shapes, canvasRef, setZoom, setView])
+
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
       if (e.ctrlKey || e.metaKey) {
@@ -199,27 +219,7 @@ export default function Canvas({ tool, shapes }: CanvasProps) {
     }
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
-  }, [viewport.zoom, shapes.shapes, setZoom, setView])
-
-  function zoomToFit() {
-    const rect = canvasRef.current?.getBoundingClientRect()
-    if (!rect || shapes.shapes.length === 0) {
-      setZoom(1)
-      return
-    }
-    const minX = Math.min(...shapes.shapes.map((s) => s.x))
-    const maxX = Math.max(...shapes.shapes.map((s) => s.x + s.width))
-    const minY = Math.min(...shapes.shapes.map((s) => s.y))
-    const maxY = Math.max(...shapes.shapes.map((s) => s.y + s.height))
-    const width = Math.max(maxX - minX, 100)
-    const height = Math.max(maxY - minY, 100)
-    const zoom = clampZoom(Math.min((rect.width - 160) / width, (rect.height - 160) / height))
-    setView({
-      zoom,
-      scrollX: rect.width / 2 - zoom * (minX + width / 2),
-      scrollY: rect.height / 2 - zoom * (minY + height / 2),
-    })
-  }
+  }, [viewport.zoom, shapes.shapes, setZoom, setView, zoomToFit])
 
   return (
     <div
